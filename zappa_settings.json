@@ -1,0 +1,10 @@
+{
+    "dev": {
+        "aws_region": "us-west-2",
+        "django_settings": "lightdelay.dev_settings",
+        "profile_name": "default",
+        "project_name": "lightdelay",
+        "runtime": "python3.6",
+        "s3_bucket": "zappa-drpyw591h"
+    }
+}

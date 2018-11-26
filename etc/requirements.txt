@@ -1,0 +1,6 @@
+Django==2.1.3
+zappa
+astropy==3.1rc1
+libsass
+django-compressor
+django-sass-processor
