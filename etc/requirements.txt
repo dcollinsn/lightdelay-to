@@ -4,3 +4,4 @@ astropy==3.1rc1
 libsass
 django-compressor
 django-sass-processor
+--pre astroquery

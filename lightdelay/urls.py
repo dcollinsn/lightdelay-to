@@ -13,14 +13,12 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
 from django.urls import path
 from django.views.generic import TemplateView
 
 from lightdelay import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
     path('about/',
          TemplateView.as_view(template_name="lightdelay/about.html"),
          name='about'),
@@ -30,13 +28,13 @@ urlpatterns = [
     path('',
          views.lightdelay_0arg,
          name='lightdelay_0arg'),
-    path('<str:loc2>/',
+    path('<str:query>/',
          views.lightdelay_1arg,
          name='lightdelay_1arg'),
-    path('<str:loc1>/<str:loc2>/',
+    path('<str:query1>/<str:query2>/',
          views.lightdelay_2arg,
          name='lightdelay_2arg'),
-    path('<str:loc1>/<str:loc2>/<str:date>/',
+    path('<str:query1>/<str:query2>/<str:query3>/',
          views.lightdelay_3arg,
          name='lightdelay_3arg'),
 ]

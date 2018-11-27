@@ -1,26 +1,34 @@
+import pytz
+from dateutil import parser
 from astropy.time import Time
 from django.shortcuts import render
 from django.utils import timezone
 
-from lightdelay.utils import get_location, calculate_distance
+from lightdelay.utils import (get_location,
+                              calculate_distance)
 
 
-def lightdelay_0arg(request):
-    # Homepage. Calculate delay to common options.
+def lightdelay_homepage(request, time):
+    # Homepage.
 
-    # Aware time for display
-    now = timezone.now()
     # Astropy time for calculations
-    time = Time(now)
+    astrotime = Time(time)
 
-    earth = get_location('earth', time)
+    earth = get_location('earth', astrotime)
     bodies = (
         ('mars', 'Mars'),
         ('moon', 'The Moon'),
+        ('venus', 'Venus'),
+        ('mercury', 'Mercury'),
+        ('jupiter', 'Jupiter'),
+        ('saturn', 'Saturn'),
+        ('uranus', 'Uranus'),
+        ('neptune', 'Neptune'),
+#        ('pluto', 'Pluto'),
     )
     body_data = []
     for body in bodies:
-        location = get_location(body[0], time)
+        location = get_location(body[0], astrotime)
         distance = calculate_distance(earth, location)
         body_data.append({
             'slug': body[0],
@@ -30,7 +38,7 @@ def lightdelay_0arg(request):
         })
 
     context = {
-        'time': now,
+        'time': time,
         'body_data': body_data,
     }
 
@@ -41,19 +49,20 @@ def lightdelay_0arg(request):
     )
 
 
-def lightdelay_1arg(request, loc2):
+def lightdelay_1body(request, query, time):
     # Calculate delay to a specific body.
     # TODO: Warn if closer than ~0.1AU, need to get earthloc
     # TODO: Error handling - can't parse location
 
-    time = Time.now()
-    earth = get_location('earth', time)
-    body2 = get_location(loc2, time)
-    distance = calculate_distance(earth, body2)
+    astrotime = Time(time)
+    earth = get_location('earth', astrotime)
+    body = get_location(query, astrotime)
+    distance = calculate_distance(earth, body)
 
     context = {
         'time': time,
-        'body2': body2,
+        'query': query,
+        'body': body,
         'distance': distance,
     }
 
@@ -64,9 +73,31 @@ def lightdelay_1arg(request, loc2):
     )
 
 
-def lightdelay_2arg(request, loc1, loc2):
+def lightdelay_0arg(request):
+    # No arguments provided, so we'll use the current time
+
+    time = timezone.now()
+    return lightdelay_homepage(request, time)
+
+
+def lightdelay_1arg(request, query):
+    # First, look for a datetime.
+    try:
+        time = parser.parse(query)
+        if time.tzinfo is None:
+            time = time.replace(tzinfo=pytz.utc)
+        return lightdelay_homepage(request, time)
+    except ValueError:
+        pass
+
+    # Well then, guess we're using timezone.now
+    time = timezone.now()
+    return lightdelay_1body(request, query, time)
+
+
+def lightdelay_2arg(request, query1, query2):
     return
 
 
-def lightdelay_3arg(request, loc1, loc2, date):
+def lightdelay_3arg(request, query1, query2, query3):
     return

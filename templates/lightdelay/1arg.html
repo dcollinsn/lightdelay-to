@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% load lightdelay_tags %}
+
+{% block title %}Light Delay to {{ query }}{% endblock %}
+{% block metadesc %}As of {{ time }}, the Light Delay to {{ query }} from Earth is currently {{ distance|distance_to_delay }}. It is {{ distance.value|floatformat:4 }} {{ distance.unit }} away from Earth.{% endblock %}
+{% block metatags %}distance to mars,light delay to mars,distance to the moon,light delay to the moon{% endblock %}
+{% block content_title %}Light Delay to {{ query }}{% endblock %}
+{% block content %}
+    <p>Data valid as of {{ time }}</p>
+    <h2>Light Delay to {{ query }}</h2>
+    <ul>
+        <li>The Light Delay to {{ query }} is {{ distance|distance_to_delay }}.</li>
+        <li>{{ query }} is currently {{ distance.value|stringformat:".3e" }} {{ distance.unit }} away from Earth.</li>
+        <li>In other units, that's:</li>
+        <ul>
+            {% if distance.unit != 'km' %}
+                <li>{{ distance|convert_to:'km'|stringformat:".3e" }} kilometers</li>
+            {% endif %}
+            {% if distance.unit != 'AU' %}
+                <li>{{ distance|convert_to:'AU'|stringformat:".3e" }} Astronomical Units</li>
+            {% endif %}
+            {% if distance.unit != 'lyr' %}
+                <li>{{ distance|convert_to:'lyr'|stringformat:".3e" }} light years</li>
+            {% endif %}
+        </ul>
+    </ul>
+{% endblock %}
