@@ -24,7 +24,6 @@ def lightdelay_homepage(request, time):
         ('saturn', 'Saturn'),
         ('uranus', 'Uranus'),
         ('neptune', 'Neptune'),
-#        ('pluto', 'Pluto'),
     )
     body_data = []
     for body in bodies:

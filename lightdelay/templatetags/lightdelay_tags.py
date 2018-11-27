@@ -29,3 +29,9 @@ def distance_to_delay(value):
 
     return delay_str
 
+
+@register.filter
+def pretty_query(value):
+    value = value.replace('_', ' ')
+    value = value.title()
+    return value

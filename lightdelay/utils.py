@@ -6,12 +6,9 @@ from astropy.coordinates import EarthLocation
 from astropy.coordinates import SkyCoord
 from astropy.coordinates import GCRS, Angle
 from astropy.coordinates import errors
-#from astropy.coordinates import solar_system_ephemeris
 from astropy.time import Time
-#import ephem
 from django.utils.dateparse import parse_datetime
 
-#from lightdelay.models import MinorPlanet
 
 class LocationNotResolved(Exception):
     pass
@@ -22,7 +19,8 @@ class QueryArgNotResolved(Exception):
 
 
 def get_location(query, time):
-#    solar_system_ephemeris.set('de432s')
+    query = query.replace('_', ' ')
+
     try:
         body = get_body(query, time)
         return body
@@ -40,29 +38,12 @@ def get_location(query, time):
     except InvalidQueryError:
         pass
 
-#    try:
-#        minor_planet = MinorPlanet.objects.filter(
-#            name__icontains=query,
-#        )[0]
-#        ephem_object = ephem.readdb(minor_planet.xephem)
-#        ephem_object.compute(time.datetime.date().strftime('%m/%d/%Y'))
-#    except MinorPlanet.DoesNotExist:
-#        pass
-
     try:
         earth_site = EarthLocation.of_site(query)
         earth_site = SkyCoord(earth_site.get_gcrs(time))
         return earth_site
     except errors.UnknownSiteException:
         pass
-
-#    Disabled - too many false positives
-#    try:
-#        earth_site = EarthLocation.of_address(query)
-#        earth_site = SkyCoord(earth_site.get_gcrs(time))
-#        return earth_site
-#    except NameResolveError:
-#        pass
 
     raise LocationNotResolved(query)
 
