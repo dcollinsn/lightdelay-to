@@ -13,7 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.urls import path
+from django.urls import path, re_path
 from django.views.generic import TemplateView
 
 from lightdelay import views
@@ -31,22 +31,16 @@ urlpatterns = [
     path('',
          views.lightdelay_0arg,
          name='lightdelay_0arg'),
-    path('<str:query>',
+    # Ugly re_path URLs are basically required here because APPEND_SLASH just
+    # straight up doesn't work with zappa, so we either need two `path` urls
+    # (one with, one without), or a regex with an optional slash.
+    re_path('^(?P<query>[^/]+)/?$',
          views.lightdelay_1arg,
          name='lightdelay_1arg'),
-    path('<str:query>/',
-         views.lightdelay_1arg,
-         name='lightdelay_1arg'),
-    path('<str:query1>/<str:query2>',
+    re_path('^(?P<query1>[^/]+)/(?P<query2>[^/]+)/?$',
          views.lightdelay_2arg,
          name='lightdelay_2arg'),
-    path('<str:query1>/<str:query2>/',
-         views.lightdelay_2arg,
-         name='lightdelay_2arg'),
-    path('<str:query1>/<str:query2>/<str:query3>',
-         views.lightdelay_3arg,
-         name='lightdelay_3arg'),
-    path('<str:query1>/<str:query2>/<str:query3>/',
+    re_path('^(?P<query1>[^/]+)/(?P<query2>[^/]+)/(?P<query3>[^/]+)/?$',
          views.lightdelay_3arg,
          name='lightdelay_3arg'),
 ]
