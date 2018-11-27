@@ -1,3 +1,4 @@
+import re
 from astroquery.mpc import MPC
 from astroquery.exceptions import InvalidQueryError
 from astropy import units as u
@@ -23,25 +24,56 @@ def get_location(query, time):
 
     try:
         body = get_body(query, time)
-        return body
+        return query.title(), body
     except KeyError:
         pass
 
     try:
-        ephemeris = MPC.get_ephemeris(query, start=time, number=1)
-        ephem_object = GCRS(
-            ra=Angle(ephemeris[0]['RA'], unit=u.deg),
-            dec=Angle(ephemeris[0]['Dec'], unit=u.deg),
-            distance=u.Quantity(ephemeris[0]['Delta'], unit=u.AU),
-        )
-        return SkyCoord(ephem_object)
+        number = ''
+        name = query
+        res = re.match(r'(\d+)\s*(.+)', query)
+        if res:
+            number = res.group(1)
+            name = res.group(2)
+
+        if number:
+            asteroid_data = MPC.query_object("asteroid", number=number, name=name)
+        else:
+            asteroid_data = MPC.query_object("asteroid", name=name)
+
+        if asteroid_data:
+            asteroid_desig = "%d %s" % (
+                asteroid_data[0]['number'],
+                asteroid_data[0]['name'],
+            )
+            ephemeris = MPC.get_ephemeris(asteroid_desig, start=time, number=1)
+            ephem_object = GCRS(
+                ra=Angle(ephemeris[0]['RA'], unit=u.deg),
+                dec=Angle(ephemeris[0]['Dec'], unit=u.deg),
+                distance=u.Quantity(ephemeris[0]['Delta'], unit=u.AU),
+            )
+            return asteroid_desig, SkyCoord(ephem_object)
+    except InvalidQueryError:
+        pass
+
+    try:
+        asteroid_data = MPC.query_object("asteroid", designation=query)
+        if asteroid_data:
+            asteroid_desig = asteroid_data[0]['designation']
+            ephemeris = MPC.get_ephemeris(asteroid_desig, start=time, number=1)
+            ephem_object = GCRS(
+                ra=Angle(ephemeris[0]['RA'], unit=u.deg),
+                dec=Angle(ephemeris[0]['Dec'], unit=u.deg),
+                distance=u.Quantity(ephemeris[0]['Delta'], unit=u.AU),
+            )
+            return asteroid_desig, SkyCoord(ephem_object)
     except InvalidQueryError:
         pass
 
     try:
         earth_site = EarthLocation.of_site(query)
         earth_site = SkyCoord(earth_site.get_gcrs(time))
-        return earth_site
+        return query, earth_site
     except errors.UnknownSiteException:
         pass
 

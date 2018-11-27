@@ -2,16 +2,19 @@
 {% load humanize %}
 {% load lightdelay_tags %}
 
-{% block title %}Light Delay to {{ query|pretty_query }}{% endblock %}
-{% block metadesc %}As of {{ time }}, the Light Delay to {{ query|pretty_query }} from Earth is {{ distance|distance_to_delay }}. It is {{ distance.value|stringformat:".3e" }} {{ distance.unit }} away from Earth.{% endblock %}
-{% block metatags %}distance to {{ query|pretty_query }},light delay to {{ query|pretty_query }}{% endblock %}
-{% block content_title %}Light Delay to {{ query|pretty_query }}{% endblock %}
+{% block title %}Light Delay to {{ body_name }}{% endblock %}
+{% block metadesc %}As of {{ time }}, the Light Delay to {{ body_name }} from Earth is {{ distance|distance_to_delay }}. The distance from Earth to {{ body_name }} is {{ distance.value|stringformat:".3e" }} {{ distance.unit }}.{% endblock %}
+{% block metatags %}distance to {{ body_name }},light delay to {{ body_name }}{% endblock %}
+{% block extra_meta %}
+    <link rel="canonical" href="https://lightdelay.to/{{ body_name|encode_url_param }}" />
+{% endblock %}
+{% block content_title %}Light Delay to {{ body_name }}{% endblock %}
 {% block content %}
     <p>Data valid as of {{ time }}</p>
-    <h2>Light Delay to {{ query|pretty_query }}</h2>
+    <h2>Light Delay to {{ body_name }}</h2>
     <ul>
-        <li>The Light Delay to {{ query|pretty_query }} is {{ distance|distance_to_delay }}.</li>
-        <li>{{ query|pretty_query }} is currently {{ distance.value|stringformat:".3e" }} {{ distance.unit }} away from Earth.</li>
+        <li>The Light Delay to {{ body_name }} is {{ distance|distance_to_delay }}.</li>
+        <li>{{ body_name }} is currently {{ distance.value|stringformat:".3e" }} {{ distance.unit }} away from Earth.</li>
         <li>In other units, that's:</li>
         <ul>
             {% if distance.unit != 'km' %}

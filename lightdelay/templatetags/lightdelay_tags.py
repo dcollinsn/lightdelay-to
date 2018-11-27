@@ -33,5 +33,11 @@ def distance_to_delay(value):
 @register.filter
 def pretty_query(value):
     value = value.replace('_', ' ')
-    value = value.title()
+    return value
+
+
+@register.filter
+def encode_url_param(value):
+    value = value.replace(' ', '_')
+    value = value.replace('%20', '_')
     return value

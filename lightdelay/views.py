@@ -14,7 +14,7 @@ def lightdelay_homepage(request, time):
     # Astropy time for calculations
     astrotime = Time(time)
 
-    earth = get_location('earth', astrotime)
+    _, earth = get_location('earth', astrotime)
     bodies = (
         ('mars', 'Mars'),
         ('moon', 'The Moon'),
@@ -27,7 +27,7 @@ def lightdelay_homepage(request, time):
     )
     body_data = []
     for body in bodies:
-        location = get_location(body[0], astrotime)
+        _, location = get_location(body[0], astrotime)
         distance = calculate_distance(earth, location)
         body_data.append({
             'slug': body[0],
@@ -54,13 +54,14 @@ def lightdelay_1body(request, query, time):
     # TODO: Error handling - can't parse location
 
     astrotime = Time(time)
-    earth = get_location('earth', astrotime)
-    body = get_location(query, astrotime)
+    _, earth = get_location('earth', astrotime)
+    body_name, body = get_location(query, astrotime)
     distance = calculate_distance(earth, body)
 
     context = {
         'time': time,
         'query': query,
+        'body_name': body_name,
         'body': body,
         'distance': distance,
     }
