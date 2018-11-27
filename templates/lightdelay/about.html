@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}About LightDelay.To{% endblock %}
+{% block metadesc %}LightDelay.To is a service providing real-time distance and communications delays between bodies in the solar system.{% endblock %}
+{% block metatags %}solar system distances,light delay,distance to{% endblock %}
+{% block content_title %}About LightDelay.To{% endblock %}
+{% block content %}
+    <p>LightDelay.To is a service that uses orbital elements and ephemerides from a variety of sources to provide accurate distance calculations between a wide range of solar bodies.</p>
+    <p>Data used by this service is provided by variety of sources, including the following projects and resources:</p>
+    <ul>
+        <li><a href="http://www.astropy.org/">The AstroPy team's Solar System Ephemerides</a>, for Earth, the Moon, and the major planets.</li>
+        <li><a href="https://www.minorplanetcenter.net/data">The Minor Planet Center's Orbital Elements and Ephemerides data sets</a>, for asteroids, comets, and minor planets</li>
+        <li>Other sources, including points on Earth, Earth satellites, and more, to come whenever I get <a href="https://en.wiktionary.org/wiki/round_tuit">around to it</a>.</li>
+    </ul>
+    <p>Links in this service are generally pretty easy to parse and build: "https://lightdelay.to/<i>location_1</i>/<i>location_2</i>/<i>effective_date_and_time</i>/". All parameters are optional. Locations can currently be the name of
+    any planet, Earth's moon, or any asteroid or comet with data in the Minor Planets Center database. Dates and times can be as specific as you like, potentially including time zones. See the following examples:</p>
+    <ul>
+        <li><a href="/">https://lightdelay.to/</a>: Using no arguments gets you the homepage, with some common locations and using the current time.</li>
+        <li><a href="/Mars/">https://lightdelay.to/Mars/</a>: A single argument is interpreted as the location that you want the distance to. The distance is calculated from the center of Earth, to that location, at the current time. This example uses a major planet.</li>
+        <li><a href="/1_Ceres/">https://lightdelay.to/1_Ceres/</a>: You can use underscores in the place of spaces, to make prettier URLs. This is the distance to Ceres, a major belt asteroid, at the current date and time. Data in this case is provided by the IAU Minor Planet Center.</li>
+        <li><a href="/eros/">https://lightdelay.to/Eros/</a>: Even though the formal designation of Eros is "433 Eros", you can use only the common name.</li>
+        <li><a href="/2018_WX/">https://lightdelay.to/2018_WX/</a>: This is an example using a preliminary designation of an asteroid, a systematic name assigned when an asteroid is first discovered.</li>
+        <li><a href="/2000-01-01/">https://lightdelay.to/2001-01-01/</a>: You can also get the homepage using a preferred timestamp, which can be very simple. Defaults to midnight, and UTC, if a time and timezone aren't specified.</li>
+        <li><a href="/2000-01-01 12:34 PM UTC-4/">https://lightdelay.to/2001-01-01 12:34 PM UTC-4/</a>: If you include a time and timezone, the time will be converted to UTC.</li>
+        <li><a href="/Deimos/">https://lightdelay.to/Deimos/</a>: Unfortunately, moons of the major planets aren't currently working.</li>
+        <li><a href="/ISS/">https://lightdelay.to/ISS/</a>: Neither are artificial satellites of Earth.</li>
+        <li><a href="/Io/">https://lightdelay.to/Io/</a>: Beware: In addition to being a moon of Jupiter, Io is a minor belt asteroid, officially 85 Io. In the future, "Io" will give you the Jovian moon, and "85 Io" will get you the asteroid. But currently, we only have the asteroid.</li>
+        <li><a href="/Mars/1_Ceres/">https://lightdelay.to/Mars/1_Ceres/</a>: This isn't implemented yet, but you will be able to get the distance between any two objects, instead of only between an object and "Earth.</li>
+        <li><a href="/ISS/New_York,_NY/">https://lightdelay.to/ISS/New_York,_NY/</a>: Same here: I want to add support for using a specific location on early, for objects very close by, but I haven't written all the necessary code yet.</li>
+        <li><a href="/Mars/2000-01-01/">https://lightdelay.to/Mars/2000-01-01/</a>: Of course, you will also be able to provide one location and a time, in order to get the Earth-Mars distance on January 1, 2000, for example.</li>
+        <li><a href="/Mars/2000-01-01/">https://lightdelay.to/Mars/1 Ceres/2000-01-01/</a>: Or use all three arguments: Two locations plus one date time. Also still in the works.</li>
+    </ul>
+    <p>There are some important caveats. First, the location histories and predictions of objects are not always 100% accurate. Orbits are actually really quite complicated. Here's what should work:</p>
+    <ul>
+        <li>Planets: Positions should be accurate between the years 1950 and 2050.</li>
+        <li>Minor Planets: Positions should be accurate from when they were first observed until the present day, however, predictions into the future may not be accurate.</li>
+    </ul>
+{% endblock %}

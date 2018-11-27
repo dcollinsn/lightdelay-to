@@ -31,7 +31,7 @@ def get_location(query, time):
     try:
         number = ''
         name = query
-        res = re.match(r'(\d+)\s*(.+)', query)
+        res = re.match(r'(\d+)\s+(.+)', query)
         if res:
             number = res.group(1)
             name = res.group(2)
