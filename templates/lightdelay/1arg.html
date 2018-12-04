@@ -35,12 +35,20 @@
             <li>Galactic Longitude: {{ earth.galactic.l }}</li>
             <li>Galactic Latitude: {{ earth.galactic.b }}</li>
             <li>Distance from Solar System Barycenter: {{ earth.galactic.distance }}</li>
+            <li>GCRS RA: {{ earth.gcrs.ra }}</li>
+            <li>GCRS Dec: {{ earth.gcrs.dec }}</li>
+            <li>GCRS Distance: {{ earth.gcrs.distance }}</li>
+            <li>GCRS Obstime: {{ earth.gcrs.obstime }}</li>
         </ul>
         <li>Coordinates for {{ body_name }}:</li>
         <ul>
             <li>Galactic Longitude: {{ body.galactic.l }}</li>
             <li>Galactic Latitude: {{ body.galactic.b }}</li>
             <li>Distance from Solar System Barycenter: {{ body.galactic.distance }}</li>
+            <li>GCRS RA: {{ body.gcrs.ra }}</li>
+            <li>GCRS Dec: {{ body.gcrs.dec }}</li>
+            <li>GCRS Distance: {{ body.gcrs.distance }}</li>
+            <li>GCRS Obstime: {{ body.gcrs.obstime }}</li>
         </ul>
     </ul>
 {% endblock %}
