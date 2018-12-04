@@ -1,7 +1,7 @@
 import pytz
 from dateutil import parser
 from astropy.time import Time
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.utils import timezone
 
 from lightdelay.utils import (get_location,
@@ -119,6 +119,25 @@ def lightdelay_2body(request, query, query2, time):
 
 
 def lightdelay_search(request):
+    args = []
+    if request.GET.get('body1'):
+        args.append(encode_url_param(request.GET.get('body1')))
+    if request.GET.get('body2'):
+        args.append(encode_url_param(request.GET.get('body2')))
+    if request.GET.get('time'):
+        args.append(encode_url_param(request.GET.get('time')))
+
+    if len(args) == 3:
+        return redirect('lightdelay_3arg', *args)
+    if len(args) == 2:
+        return redirect('lightdelay_2arg', *args)
+    if len(args) == 1:
+        return redirect('lightdelay_1arg', *args)
+    if len(args) == 0:
+        return redirect('lightdelay_0arg', *args)
+
+
+
     # See if we got a time
     try:
         time = parser.parse(request.GET.get('time'))
@@ -126,9 +145,11 @@ def lightdelay_search(request):
         time = timezone.now()
 
     if request.GET.get('body2'):
+        # TODO: Return Redirect?
         return lightdelay_2body(request, request.GET.get('body1'), request.GET.get('body2'), time)
 
     if request.GET.get('body1'):
+        # TODO: Return Redirect?
         return lightdelay_1body(request, request.GET.get('body1'), time)
 
     return lightdelay_homepage(request, time)
