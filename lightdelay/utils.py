@@ -51,6 +51,7 @@ def get_location(query, time):
                 ra=Angle(ephemeris[0]['RA'], unit=u.deg),
                 dec=Angle(ephemeris[0]['Dec'], unit=u.deg),
                 distance=u.Quantity(ephemeris[0]['Delta'], unit=u.AU),
+                obstime=time,
             )
             return asteroid_desig, SkyCoord(ephem_object)
     except InvalidQueryError:
@@ -65,6 +66,7 @@ def get_location(query, time):
                 ra=Angle(ephemeris[0]['RA'], unit=u.deg),
                 dec=Angle(ephemeris[0]['Dec'], unit=u.deg),
                 distance=u.Quantity(ephemeris[0]['Delta'], unit=u.AU),
+                obstime=time,
             )
             return asteroid_desig, SkyCoord(ephem_object)
     except InvalidQueryError:
