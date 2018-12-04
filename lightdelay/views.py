@@ -155,6 +155,26 @@ def lightdelay_1arg(request, query):
 
 
 def lightdelay_2arg(request, query1, query2):
+    args = [query1, query2]
+    time = None
+    for arg in args:
+        try:
+            time = parser.parse(arg)
+            if time.tzinfo is None:
+                time = time.replace(tzinfo=pytz.utc)
+            args.remove(arg)
+            break
+        except ValueError:
+            pass
+
+    if time is None:
+        time = timezone.now()
+
+    if len(args) == 2:
+        return lightdelay_2body(request, query1, query2, time)
+    if len(args) == 1:
+        return lightdelay_1body(request, args[0], time)
+
     return
 
 
