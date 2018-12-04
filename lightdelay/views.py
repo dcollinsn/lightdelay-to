@@ -5,6 +5,7 @@ from django.shortcuts import render
 from django.utils import timezone
 
 from lightdelay.utils import (get_location,
+                              encode_url_param,
                               calculate_distance,
                               LocationNotResolved)
 

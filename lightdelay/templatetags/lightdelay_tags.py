@@ -1,6 +1,8 @@
 from datetime import timedelta
 from django import template
 
+from lightdelay.utils import encode_url_param
+
 register = template.Library()
 
 
@@ -36,8 +38,4 @@ def pretty_query(value):
     return value
 
 
-@register.filter
-def encode_url_param(value):
-    value = value.replace(' ', '_')
-    value = value.replace('%20', '_')
-    return value
+register.filter('encode_url_param', encode_url_param)

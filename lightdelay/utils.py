@@ -104,3 +104,9 @@ def parse_queryarg(query):
                 raise QueryArgNotResolved(query)
         except ValueError:
             raise QueryArgNotResolved(query)
+
+
+def encode_url_param(value):
+    value = value.replace(' ', '_')
+    value = value.replace('%20', '_')
+    return value
