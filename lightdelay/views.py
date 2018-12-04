@@ -73,6 +73,50 @@ def lightdelay_1body(request, query, time):
     )
 
 
+def lightdelay_2body(request, query, query2, time):
+    # Calculate delay to a specific body.
+    # TODO: Warn if closer than ~0.1AU, need to get earthloc
+    # TODO: Error handling - can't parse location
+
+    astrotime = Time(time)
+    _, earth = get_location('earth', astrotime)
+    try:
+        body_name, body = get_location(query, astrotime)
+    except LocationNotResolved as e:
+        return lightdelay_locationerror(request, e)
+    distance = calculate_distance(earth, body)
+
+    context = {
+        'time': time,
+        'query': query,
+        'body_name': body_name,
+        'body': body,
+        'distance': distance,
+    }
+
+    return render(
+        request,
+        'lightdelay/1arg.html',
+        context,
+    )
+
+
+def lightdelay_search(request):
+    # See if we got a time
+    try:
+        time = parser.parse(request.GET.get('time'))
+    except (TypeError, ValueError):
+        time = timezone.now()
+
+    if request.GET.get('body2'):
+        return lightdelay_2body(request, request.GET.get('body1'), request.GET.get('body2'), time)
+
+    if request.GET.get('body1'):
+        return lightdelay_1body(request, request.GET.get('body1'), time)
+
+    return lightdelay_homepage(request, time)
+
+
 def lightdelay_0arg(request):
     # No arguments provided, so we'll use the current time
 

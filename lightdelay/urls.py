@@ -28,9 +28,15 @@ urlpatterns = [
     path('sitemap.xml',
          TemplateView.as_view(template_name="lightdelay/sitemap.xml"),
          name='sitemap'),
+    path('robots.txt',
+         TemplateView.as_view(template_name="lightdelay/robots.txt"),
+         name='robots.txt'),
     path('',
          views.lightdelay_0arg,
          name='lightdelay_0arg'),
+    path('handle_search/',
+         views.lightdelay_search,
+         name='lightdelay_search'),
     # Ugly re_path URLs are basically required here because APPEND_SLASH just
     # straight up doesn't work with zappa, so we either need two `path` urls
     # (one with, one without), or a regex with an optional slash.

@@ -9,7 +9,7 @@
 {% block content %}
     <p>Data valid as of {{ time }}</p>
     {% for body in body_data %}
-        <h2>Light Delay to {{ body.name }}</h2>
+        <h2><a href="/{{ body.name|encode_url_param }}">Light Delay to {{ body.name }}</a></h2>
         <ul>
             <li>The Light Delay to {{ body.name }} is {{ body.distance|distance_to_delay }}.</li>
             <li>{{ body.name }} is currently {{ body.distance.value|stringformat:".3e" }} {{ body.distance.unit }} away from Earth.</li>

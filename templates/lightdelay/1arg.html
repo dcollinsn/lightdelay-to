@@ -4,7 +4,7 @@
 
 {% block title %}Light Delay to {{ body_name }}{% endblock %}
 {% block metadesc %}As of {{ time }}, the Light Delay to {{ body_name }} from Earth is {{ distance|distance_to_delay }}. The distance from Earth to {{ body_name }} is {{ distance.value|stringformat:".3e" }} {{ distance.unit }}.{% endblock %}
-{% block metatags %}distance to {{ body_name }},light delay to {{ body_name }}{% endblock %}
+{% block metatags %}distance to {{ body_name }},light delay to {{ body_name }},communications delay to {{ body_name }}{% endblock %}
 {% block extra_meta %}
     <link rel="canonical" href="https://lightdelay.to/{{ body_name|encode_url_param }}" />
 {% endblock %}

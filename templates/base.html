@@ -1,6 +1,17 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="en">
 <head>
+    {% if site_prod %}
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-129971447-1"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'UA-129971447-1');
+        </script>
+    {% endif %}
     <title>{% block title %}{% endblock %}</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,11 +24,14 @@
 
 </head>
 <body>
+{% include 'lightdelay/nav.html' %}
+{% include 'lightdelay/search.html' %}
 <div id="content">
 
     <h1>{% block content_title %}{% endblock %}</h1>
     {% block content %}{% endblock %}
 
 </div>
+{% include 'lightdelay/nav.html' %}
 </body>
 </html>
