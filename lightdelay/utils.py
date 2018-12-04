@@ -70,12 +70,16 @@ def get_location(query, time):
     except InvalidQueryError:
         pass
 
-    try:
-        earth_site = EarthLocation.of_site(query)
-        earth_site = SkyCoord(earth_site.get_gcrs(time))
-        return query, earth_site
-    except errors.UnknownSiteException:
-        pass
+#    This section doesn't belong here at all. This section should be in a
+#    separate function for earth locations, because earth locations and
+#    nonterrestrial objects need to be handled differently.
+#
+#    try:
+#        earth_site = EarthLocation.of_site(query)
+#        earth_site = SkyCoord(earth_site.get_gcrs(time))
+#        return query, earth_site
+#    except errors.UnknownSiteException:
+#        pass
 
     raise LocationNotResolved(query)
 

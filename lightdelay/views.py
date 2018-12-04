@@ -5,7 +5,16 @@ from django.shortcuts import render
 from django.utils import timezone
 
 from lightdelay.utils import (get_location,
-                              calculate_distance)
+                              calculate_distance,
+                              LocationNotResolved)
+
+
+def lightdelay_locationerror(request, e):
+    return render(
+        request,
+        'lightdelay/locationerror.html',
+        {'e': e},
+    )
 
 
 def lightdelay_homepage(request, time):
@@ -27,7 +36,10 @@ def lightdelay_homepage(request, time):
     )
     body_data = []
     for body in bodies:
-        _, location = get_location(body[0], astrotime)
+        try:
+            _, location = get_location(body[0], astrotime)
+        except LocationNotResolved as e:
+            return lightdelay_locationerror(request, e)
         distance = calculate_distance(earth, location)
         body_data.append({
             'slug': body[0],
@@ -55,7 +67,10 @@ def lightdelay_1body(request, query, time):
 
     astrotime = Time(time)
     _, earth = get_location('earth', astrotime)
-    body_name, body = get_location(query, astrotime)
+    try:
+        body_name, body = get_location(query, astrotime)
+    except LocationNotResolved as e:
+        return lightdelay_locationerror(request, e)
     distance = calculate_distance(earth, body)
 
     context = {

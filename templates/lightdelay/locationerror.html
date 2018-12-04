@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% load lightdelay_tags %}
+
+{% block title %}Light Delay | Location Error{% endblock %}
+{% block extra_meta %}
+    <meta name="robots" content="noindex">
+{% endblock %}
+{% block content_title %}Location Parsing Error{% endblock %}
+{% block content %}
+<p>We're sorry, but we don't know what to make of your request for "{{ e.args.0 }}"! This might be a temporary server error, so try back later if you think this should work, or <a href="https://github.com/dcollinsn/lightdelay-to/">visit us on GitHub</a>.</p>
+
+<p>At the moment, what <i>should</i> work is the name of any solar system planet or minor planet (including asteroids and comets). Earth's moon is special, so it works too (called "Moon"), but other moons, stars, and so on are still a work in progress.</p>
+{% endblock %}
