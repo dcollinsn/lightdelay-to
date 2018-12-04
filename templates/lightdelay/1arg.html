@@ -28,4 +28,19 @@
             {% endif %}
         </ul>
     </ul>
+    <p>Debug information follows:</p>
+    <ul>
+        <li>Coordinates for Earth:</li>
+        <ul>
+            <li>Galactic Longitude: {{ earth.galactic.l }}</li>
+            <li>Galactic Latitude: {{ earth.galactic.b }}</li>
+            <li>Distance from Solar System Barycenter: {{ earth.galactic.distance }}</li>
+        </ul>
+        <li>Coordinates for {{ body_name }}:</li>
+        <ul>
+            <li>Galactic Longitude: {{ body.galactic.l }}</li>
+            <li>Galactic Latitude: {{ body.galactic.b }}</li>
+            <li>Distance from Solar System Barycenter: {{ body.galactic.distance }}</li>
+        </ul>
+    </ul>
 {% endblock %}

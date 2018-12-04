@@ -77,6 +77,7 @@ def lightdelay_1body(request, query, time):
         'time': time,
         'query': query,
         'body_name': body_name,
+        'earth': earth,
         'body': body,
         'distance': distance,
     }
