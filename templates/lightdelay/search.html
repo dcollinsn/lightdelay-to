@@ -1,11 +1,31 @@
-<form action="/handle_search/" method="get" autocomplete="off">
-    <dl>
-        <dt><label for="body1">Distance To What?</label></dt>
-        <dd><input type="text" name="body1"></dd>
-        <dt><label for="body2">Distance From What? (leave blank for Earth)</label></dt>
-        <dd><input type="text" name="body2"></dd>
-        <dt><label for="time">Distance at What Time? (leave blank for now)</label></dt>
-        <dd><input type="text" name="time"></dd>
-    </dl>
-    <button type="submit" value="Search">Search</button>
+<form class="search-form" action="/handle_search/" method="get" autocomplete="off">
+  <div class="field-container">
+    <div class="mdc-text-field">
+      <label class="mdc-floating-label" for="body1">Distance To What?</label>
+      <input class="mdc-text-field__input" type="text" name="body1">
+      <div class="mdc-line-ripple"></div>
+    </div>
+  </div>
+  <div class="field-container">
+    <div class="mdc-text-field">
+      <label class="mdc-floating-label" for="body2">Distance From What? (leave blank for Earth)</label>
+      <input class="mdc-text-field__input" type="text" name="body2">
+      <div class="mdc-line-ripple"></div>
+    </div>
+  </div>
+  <div class="field-container">
+    <div class="mdc-text-field">
+      <label class="mdc-floating-label" for="time">Distance at What Time? (leave blank for now)</label>
+      <input class="mdc-text-field__input" type="text" name="time">
+      <div class="mdc-line-ripple"></div>
+    </div>
+  </div>
+  <div class="field-container">
+    <div class="search-form-button">
+      <button class="mdc-button mdc-button--raised" type="submit" value="Search">
+        <i class="material-icons mdc-button__icon" aria-hidden="true">search</i>
+        Search
+      </button>
+    </div>
+  </div>
 </form>

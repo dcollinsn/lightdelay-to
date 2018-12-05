@@ -1,36 +1,57 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="en">
 <head>
-    {% if site_prod %}
-        <!-- Global site tag (gtag.js) - Google Analytics -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-129971447-1"></script>
-        <script>
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
+  {% if site_prod %}
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-129971447-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
 
-            gtag('config', 'UA-129971447-1');
-        </script>
-    {% endif %}
-    <title>{% block title %}{% endblock %}</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="{% block metadesc %}{% endblock %}">
-    <meta name="keywords" content="{% block metatags %}{% endblock %}">
-    {% block extra_meta %}{% endblock %}
+      gtag('config', 'UA-129971447-1');
+    </script>
+  {% endif %}
+  <title>{% block title %}{% endblock %}</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="{% block metadesc %}{% endblock %}">
+  <meta name="keywords" content="{% block metatags %}{% endblock %}">
+  {% block extra_meta %}{% endblock %}
 
-    {% load sass_tags %}
-    <link href="{% sass_src 'css/style.scss' %}?v=1.07" rel="stylesheet" type="text/css" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
+  <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js" type="text/javascript"></script>
+  <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+  {% load sass_tags %}
+  <link href="{% sass_src 'css/style.scss' %}" rel="stylesheet" type="text/css" />
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+      [].map.call(document.querySelectorAll('.mdc-button'), function(el) {
+        new mdc.ripple.MDCRipple(el);
+      });
+      [].map.call(document.querySelectorAll('.mdc-text-field'), function(el) {
+        new mdc.textField.MDCTextField(el);
+      });
+      [].map.call(document.querySelectorAll('.mdc-line-ripple'), function(el) {
+        new mdc.lineRipple.MDCLineRipple(el);
+      });
+    });
+  </script>
 </head>
 <body>
 {% include 'lightdelay/nav.html' %}
-{% include 'lightdelay/search.html' %}
 <div id="content">
-
+  <div id="search">
+    {% include 'lightdelay/search.html' %}
+  </div>
+  <div id="main-content">
     <h1>{% block content_title %}{% endblock %}</h1>
     {% block content %}{% endblock %}
-
+  </div>
 </div>
 {% include 'lightdelay/nav.html' %}
 </body>
