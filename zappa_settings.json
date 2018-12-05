@@ -11,6 +11,17 @@
             "HOME": "/tmp",
         },
     }
+    "staging": {
+        "aws_region": "us-west-2",
+        "django_settings": "lightdelay.staging_settings",
+        "profile_name": "default",
+        "project_name": "lightdelay",
+        "runtime": "python3.6",
+        "domain": "staging.lightdelay.to",
+        "aws_environment_variables": {
+            "HOME": "/tmp",
+        },
+    }
     "prod": {
         "aws_region": "us-west-2",
         "django_settings": "lightdelay.prod_settings",
