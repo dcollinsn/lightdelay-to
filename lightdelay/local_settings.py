@@ -106,6 +106,9 @@ DATETIME_FORMAT = 'N j, Y, P e'
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.abspath(os.path.join(BASE_DIR, 'static_root'))
 SASS_PROCESSOR_ROOT = STATIC_ROOT
+SASS_PROCESSOR_INCLUDE_DIRS = [
+    os.path.join(BASE_DIR, 'node_modules'),
+]
 
 STATICFILES_DIRS = [os.path.abspath(os.path.join(BASE_DIR, 'static'))]
 STATICFILES_FINDERS = [

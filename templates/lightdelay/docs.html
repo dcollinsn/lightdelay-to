@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}Documentation for LightDelay.To{% endblock %}
+{% block metadesc %}LightDelay.To is a service providing real-time distance and communications delays between bodies in the solar system.{% endblock %}
+{% block metatags %}solar system distances,light delay,distance to,communications delay,propagation delay{% endblock %}
+{% block content_title %}Documentation for LightDelay.To{% endblock %}
+{% block content %}
+  <h2>What is LightDelay.To?</h2>
+  <p>LightDelay.To is a service that uses orbital elements and ephemerides from a variety of sources to provide accurate distance calculations between a wide range of solar bodies.</p>
+
+  <h2>Who is LightDelay.To?</h2>
+  <p>I'm just a hacker who knows how to use Python and who decided to read a lot of documentation on astrometrics libraries. This service is independent and non-profit. The code is available on GitHub (link at the top of every page) and pull requests are welcomed and greatly appreciated!</p>
+
+  <h2>Why is LightDelay.To?</h2>
+  <p>During the <a href="https://mars.nasa.gov/insight/timeline/landing/entry-descent-landing/">InSight Mars mission landing</a>, I was watching the stream and wondering how significant the communications delay was, how long ago the events we were watching had actually occurred. While it's easy to find <i>average</i> speed-of-light delays, I couldn't find <i>anywhere</i> that listed the current communications delay to Mars without pulling out an astrometrics package and calculating it myself. So I decided to put this together.</p>
+
+  <h2>API Format</h2>
+  <p>The LightDelay.To API is very simple. Issue a GET request to a URL of the form "https://lightdelay.to/<i>location1</i>/<i>location2</i>/<i>time</i>/".  You can leave off any parameters you don't need, and you can list the parameters in any order. We will do our best to return the result you're looking for.</p>
+  <p>If you give a single location, we will return the distance from Earth to that solar system object. If you give two locations, we will return the distance between those two objects. If you give a time, we will calculate the distance as of that time. If you don't, we'll use the current time. See?  Pretty straightforward.</p>
+
+  <h2>Times</h2>
+  <p>You can input a time in any format that <a href="https://dateutil.readthedocs.io/en/stable/parser.html">Python's <code>dateutil.parser</code></a> understands. Advertised as supporting "most known formats", you should find this parser to be pretty flexible and very <a href="https://en.wikipedia.org/wiki/DWIM">DWIMmy</a>. Here are a few examples:</p>
+  <ul>
+    <li><a href="/2000/">https://lightdelay.to/2000/</a>: A year alone is fine. You'll get the current month and day, in that year.</li>
+    <li><a href="/2000-07/">https://lightdelay.to/2000-07/</a>: As is a year and a month. Again, the current day of the month will be used to fill the missing data.</li>
+    <li><a href="/2000-07-04/">https://lightdelay.to/2000-07-04/</a>: Or a year, month, and day.</li>
+    <li><a href="/01-02-2000/">https://lightdelay.to/01-02-2000/</a>: This is interpreted as Month - Day - Year if possible, sorry non-Americans.</li>
+    <li><a href="/28-02-2000/">https://lightdelay.to/28-02-2000/</a>: No such month as "28", so this one is Day - Month - Year.</li>
+    <li><a href="/2000-01-01 10:00/">https://lightdelay.to/2000-01-01 10:00/</a>: If you don't give a time zone, we will assume UTC.</li>
+    <li><a href="/2000-01-01 10:00 UTC-4/">https://lightdelay.to/2000-01-01 10:00 UTC-4/</a>: If you want to give a time zone, do so in UTC offset format.</li>
+  </ul>
+
+  <h2>Locations</h2>
+  <p>You can select a location by name. Currently support is limited to only a few categories of object, but I'm working on adding more.</p>
+
+  <h3>Planets</h3>
+  <p>Planets, the Sun, and Earth's Moon are calculated using the solar system ephemerides built in to <a href="http://www.astropy.org/">the AstroPy library</a>. Data should be accurate for the range from 1950 to 2050, and may still be relatively accurate outside that window. Examples:</p>
+  <ul>
+    <li><a href="/Sun/">https://lightdelay.to/Sun/</a>:</li>
+    <li><a href="/Moon/">https://lightdelay.to/Moon/</a>:</li>
+    <li><a href="/Mars/">https://lightdelay.to/Mars/</a>:</li>
+  </ul>
+
+  <h3>Minor Planets</h3>
+  <p>Anything classified as an asteroid by the <a href="https://www.minorplanetcenter.net/data">Minor Planet Center</a> is available as well. This includes dwarf planets as well as asteroids of all sizes, including:</p>
+  <ul>
+    <li><a href="/Pluto/">https://lightdelay.to/Pluto/</a>:</li>
+    <li><a href="/1_Ceres/">https://lightdelay.to/1_Ceres/</a>:</li>
+    <li><a href="/Eros/">https://lightdelay.to/Eros/</a>:</li>
+  </ul>
+
+  <h3>Comets</h3>
+  <p>Comets are also available from the Minor Planet Center database, however, they aren't yet fully supported here. One issue is that comets are named using names like "9P/Tempel", but the <code>/</code> character is also the HTML
+  path separator. "<code>Tempel</code>" doesn't work because that's <a href="/3808 Tempel/">also an asteroid</a>, and "<code>Tempel 1</code>" doesn't work because the MPC API doesn't support it. "<code>9P</code>" alone <i>does</i> work
+  in a pinch, though!</p>
+  <ul>
+    <li><a href="/1995_O1/">https://lightdelay.to/1995_O1/</a>: Using part of the official designation of <code>C/1995 O1</code>, better known as Comet Hale-Bopp.</li>
+    <li><a href="/9P/">https://lightdelay.to/9P/</a>: Using part of the official designation of <code>9P/Tempel</code>.</li>
+    <li><a href="/1P_Halley/">https://lightdelay.to/1P_Halley/</a>: If you replace the <code>/</code> in <code>1P/Halley</code> with an underscore, you'll get the correct page. For example try typing <code>1P/Halley</code> in the search box.</li>
+  </ul>
+
+  <h3>Other Moons</h3>
+
+  <h3>Earth-Orbiting Satellites</h3>
+
+  <h3>Locations on Earth</h3>
+
+  <h2>Accuracy</h2>
+  <p>There are some important caveats. I'm a coder, not an astrometrist, so I'm not an expert on the accuracy of these data sources or the validity of this data either into the past or into the future. I have it on good authority that orbital dynamics are actually rather complicated. Here's what should work:</p>
+  <ul>
+      <li>Planets: Positions should be accurate between the years 1950 and 2050.</li>
+      <li>Minor Planets: Positions should be accurate from when they were first observed until the present day, however, predictions into the future may not be accurate.</li>
+  </ul>
+{% endblock %}
+

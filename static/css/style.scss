@@ -1,11 +1,26 @@
+@import "@material/button/mdc-button";
+@import "@material/textfield/mdc-text-field";
+@import "@material/card/mdc-card";
+
 html, body {
   width: 100%;
   height: 100%;
+  background-color: #e0d0ff;
+}
+
+h1, h2, h3 {
+  font-family: Roboto, sans-serif;
+  color: $mdc-theme-primary;
+  a:link, a:visited {
+    color: $mdc-theme-primary;
+    text-decoration: none;
+  }
 }
 
 nav {
   width: 100%;
   display: flex;
+  flex-wrap: wrap;
 }
 
 div#content {
@@ -18,6 +33,7 @@ div#content {
   }
   div#main-content {
     flex: 2 1 auto;
+    max-width: 60%;
   }
 }
 
@@ -25,6 +41,8 @@ form.search-form {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  margin: 0 2em 2em 0;
+  padding: 1em 1em 1em 1em;
   div.field-container {
     flex: 1 1 auto;
     padding: 10px;
@@ -35,3 +53,27 @@ form.search-form {
   }
 }
 
+div.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  div.mdc-card {
+    flex: 0 1 auto;
+    width: 20em;
+    margin: 0 2em 2em 0;
+    padding: 0 1em 1em 1em;
+  }
+}
+
+div.single-result-card-container, div.debug-card-container {
+  div.mdc-card {
+    width: 40%;
+  }
+}
+
+@media only screen and (max-width: 1280px) {
+  div#content {
+    div#main-content {
+      max-width: 100%;
+    }
+  }
+}

@@ -11,27 +11,33 @@
 {% block content_title %}Light Delay to {{ body_name }}{% endblock %}
 {% block content %}
     <p>Data valid as of {{ time }}</p>
-    <h2>Light Delay to {{ body_name }}</h2>
-    <ul>
-        <li>The Light Delay to {{ body_name }} is {{ distance|distance_to_delay }}.</li>
-        <li>{{ body_name }} is currently {{ distance.value|stringformat:".3e" }} {{ distance.unit }} away from Earth.</li>
-        <li>In other units, that's:</li>
+    <div class="card-container single-result-card-container">
+      <div class="mdc-card">
+        <h2 class="card-header">Light Delay to {{ body_name }}</h2>
         <ul>
+          <li>The Light Delay to {{ body_name }} is {{ distance|distance_to_delay }}.</li>
+          <li>{{ body_name }} is currently {{ distance.value|stringformat:".3e" }} {{ distance.unit }} away from Earth.</li>
+          <li>In other units, that's:</li>
+          <ul>
             {% if distance.unit != 'km' %}
-                <li>{{ distance|convert_to:'km'|stringformat:".3e" }} kilometers</li>
+              <li>{{ distance|convert_to:'km'|stringformat:".3e" }} kilometers</li>
             {% endif %}
             {% if distance.unit != 'AU' %}
-                <li>{{ distance|convert_to:'AU'|stringformat:".3e" }} Astronomical Units</li>
+              <li>{{ distance|convert_to:'AU'|stringformat:".3e" }} Astronomical Units</li>
             {% endif %}
             {% if distance.unit != 'lyr' %}
-                <li>{{ distance|convert_to:'lyr'|stringformat:".3e" }} light years</li>
+              <li>{{ distance|convert_to:'lyr'|stringformat:".3e" }} light years</li>
             {% endif %}
+          </ul>
         </ul>
-    </ul>
-    <p>Debug information follows:</p>
-    <ul>
-        <li>Coordinates for Earth:</li>
+      </div>
+    </div>
+    <div class="card-container debug-card-container">
+      <div class="mdc-card">
+        <h2 class="card-header">Debug information for Earth:</h2>
         <ul>
+          <li>Coordinates for Earth:</li>
+          <ul>
             <li>Galactic Longitude: {{ earth.galactic.l }}</li>
             <li>Galactic Latitude: {{ earth.galactic.b }}</li>
             <li>Distance from Solar System Barycenter: {{ earth.galactic.distance }}</li>
@@ -39,9 +45,14 @@
             <li>GCRS Dec: {{ earth.gcrs.dec }}</li>
             <li>GCRS Distance: {{ earth.gcrs.distance }}</li>
             <li>GCRS Obstime: {{ earth.gcrs.obstime }}</li>
+          </ul>
         </ul>
-        <li>Coordinates for {{ body_name }}:</li>
+      </div>
+      <div class="mdc-card">
+        <h2 class="card-header">Debug information for {{ body_name }}:</h2>
         <ul>
+          <li>Coordinates for {{ body_name }}:</li>
+          <ul>
             <li>Galactic Longitude: {{ body.galactic.l }}</li>
             <li>Galactic Latitude: {{ body.galactic.b }}</li>
             <li>Distance from Solar System Barycenter: {{ body.galactic.distance }}</li>
@@ -49,6 +60,8 @@
             <li>GCRS Dec: {{ body.gcrs.dec }}</li>
             <li>GCRS Distance: {{ body.gcrs.distance }}</li>
             <li>GCRS Obstime: {{ body.gcrs.obstime }}</li>
+          </ul>
         </ul>
-    </ul>
+      </div>
+    </div>
 {% endblock %}

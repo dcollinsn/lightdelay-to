@@ -1,4 +1,5 @@
 import re
+import urllib.parse
 from astroquery.mpc import MPC
 from astroquery.exceptions import InvalidQueryError
 from astropy import units as u
@@ -22,12 +23,18 @@ class QueryArgNotResolved(Exception):
 def get_location(query, time):
     query = query.replace('_', ' ')
 
+    if query.lower() == "the moon" or query.lower == "luna":
+        query = "moon"
+
     try:
         body = get_body(query, time)
+        if query.lower() == "moon":
+            query = "The Moon"
         return query.title(), body
     except KeyError:
         pass
 
+    # Asteroid using designation
     try:
         number = ''
         name = query
@@ -57,6 +64,7 @@ def get_location(query, time):
     except InvalidQueryError:
         pass
 
+    # Asteroid by name
     try:
         asteroid_data = MPC.query_object("asteroid", designation=query)
         if asteroid_data:
@@ -69,6 +77,27 @@ def get_location(query, time):
                 obstime=time,
             )
             return asteroid_desig, SkyCoord(ephem_object)
+    except InvalidQueryError:
+        pass
+
+    # Comet or MPC object using designation
+    try:
+        name = query
+        res = re.match(r'(\d*P|C)\s+(.+)', query)
+        if res:
+            name = "%s/%s" % (
+                res.group(1),
+                res.group(2),
+            )
+
+        ephemeris = MPC.get_ephemeris(name, start=time, number=1)
+        ephem_object = GCRS(
+            ra=Angle(ephemeris[0]['RA'], unit=u.deg),
+            dec=Angle(ephemeris[0]['Dec'], unit=u.deg),
+            distance=u.Quantity(ephemeris[0]['Delta'], unit=u.AU),
+            obstime=time,
+        )
+        return name, SkyCoord(ephem_object)
     except InvalidQueryError:
         pass
 
@@ -107,6 +136,10 @@ def parse_queryarg(query):
 
 
 def encode_url_param(value):
+    # Clean up space characters
     value = value.replace(' ', '_')
     value = value.replace('%20', '_')
+    # Clean up slash characters
+    value = value.replace('/', '_')
+    value = value.replace('%2F', '_')
     return value
