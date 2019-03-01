@@ -90,30 +90,33 @@ def lightdelay_1body(request, query, time):
     )
 
 
-def lightdelay_2body(request, query, query2, time):
+def lightdelay_2body(request, query1, query2, time):
     # Calculate delay to a specific body.
     # TODO: Warn if closer than ~0.1AU, need to get earthloc
     # TODO: Error handling - can't parse location
 
     astrotime = Time(time)
-    _, earth = get_location('earth', astrotime)
     try:
-        body_name, body = get_location(query, astrotime)
+        body1_name, body1 = get_location(query1, astrotime)
+        body2_name, body2 = get_location(query2, astrotime)
     except LocationNotResolved as e:
         return lightdelay_locationerror(request, e)
-    distance = calculate_distance(earth, body)
+    distance = calculate_distance(body1, body2)
 
     context = {
         'time': time,
-        'query': query,
-        'body_name': body_name,
-        'body': body,
+        'query1': query1,
+        'body1_name': body1_name,
+        'body1': body1,
+        'query2': query2,
+        'body2_name': body2_name,
+        'body2': body2,
         'distance': distance,
     }
 
     return render(
         request,
-        'lightdelay/1arg.html',
+        'lightdelay/2arg.html',
         context,
     )
 
@@ -178,7 +181,7 @@ def lightdelay_1arg(request, query):
 
 
 def lightdelay_2arg(request, query1, query2):
-    args = [query1, query2]
+    args = [query2, query1]
     time = None
     for arg in args:
         try:
@@ -194,7 +197,7 @@ def lightdelay_2arg(request, query1, query2):
         time = timezone.now()
 
     if len(args) == 2:
-        return lightdelay_2body(request, query1, query2, time)
+        return lightdelay_2body(request, args[1], args[0], time)
     if len(args) == 1:
         return lightdelay_1body(request, args[0], time)
 
@@ -202,4 +205,19 @@ def lightdelay_2arg(request, query1, query2):
 
 
 def lightdelay_3arg(request, query1, query2, query3):
-    return
+    args = [query3, query2, query1]
+    time = None
+    for arg in args:
+        try:
+            time = parser.parse(arg)
+            if time.tzinfo is None:
+                time = time.replace(tzinfo=pytz.utc)
+            args.remove(arg)
+            break
+        except ValueError:
+            pass
+
+    if time is None:
+        time = timezone.now()
+
+    return lightdelay_2body(request, args[1], args[0], time)

@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% load lightdelay_tags %}
+
+{% block title %}Light Delay from {{ body2_name }} to {{ body1_name }}{% endblock %}
+{% block metadesc %}As of {{ time }}, the Light Delay from {{ body2_name }} to {{ body1_name }} is {{ distance|distance_to_delay }}. The distance from {{ body2_name }} to {{ body1_name }} is {{ distance.value|stringformat:".3e" }} {{ distance.unit }}.{% endblock %}
+{% block metatags %}distance to {{ body1_name }},distance to {{ body2_name }},light delay to {{ body1_name }},light delay to {{ body2_name }},communications delay to {{ body1_name }}{% endblock %}
+{% block extra_meta %}
+    <link rel="canonical" href="https://lightdelay.to/{{ body1_name|encode_url_param }}/{{ body2_name|encode_url_param }}" />
+{% endblock %}
+{% block content_title %}Light Delay from {{ body2_name }} to {{ body1_name }}{% endblock %}
+{% block content %}
+    <p>Data valid as of {{ time }}</p>
+    <div class="card-container single-result-card-container">
+      <div class="mdc-card">
+        <h2 class="card-header">Light Delay from {{ body2_name }} to {{ body1_name }}</h2>
+        <ul>
+          <li>The Light Delay from {{ body2_name }} to {{ body1_name }} is {{ distance|distance_to_delay }}.</li>
+          <li>{{ body1_name }} is currently {{ distance.value|stringformat:".3e" }} {{ distance.unit }} away from {{ body2_name }}.</li>
+          <li>In other units, that's:</li>
+          <ul>
+            {% if distance.unit != 'km' %}
+              <li>{{ distance|convert_to:'km'|stringformat:".3e" }} kilometers</li>
+            {% endif %}
+            {% if distance.unit != 'AU' %}
+              <li>{{ distance|convert_to:'AU'|stringformat:".3e" }} Astronomical Units</li>
+            {% endif %}
+            {% if distance.unit != 'lyr' %}
+              <li>{{ distance|convert_to:'lyr'|stringformat:".3e" }} light years</li>
+            {% endif %}
+          </ul>
+        </ul>
+      </div>
+    </div>
+    <div class="card-container debug-card-container">
+      <div class="mdc-card">
+        <h2 class="card-header">Debug information for {{ body1_name }}:</h2>
+        <ul>
+          <li>Coordinates for {{ body1_name }}:</li>
+          <ul>
+            <li>Galactic Longitude: {{ body1.galactic.l }}</li>
+            <li>Galactic Latitude: {{ body1.galactic.b }}</li>
+            <li>Distance from Solar System Barycenter: {{ body1.galactic.distance }}</li>
+            <li>GCRS RA: {{ body1.gcrs.ra }}</li>
+            <li>GCRS Dec: {{ body1.gcrs.dec }}</li>
+            <li>GCRS Distance: {{ body1.gcrs.distance }}</li>
+            <li>GCRS Obstime: {{ body1.gcrs.obstime }}</li>
+          </ul>
+        </ul>
+      </div>
+      <div class="mdc-card">
+        <h2 class="card-header">Debug information for {{ body2_name }}:</h2>
+        <ul>
+          <li>Coordinates for {{ body2_name }}:</li>
+          <ul>
+            <li>Galactic Longitude: {{ body2.galactic.l }}</li>
+            <li>Galactic Latitude: {{ body2.galactic.b }}</li>
+            <li>Distance from Solar System Barycenter: {{ body2.galactic.distance }}</li>
+            <li>GCRS RA: {{ body2.gcrs.ra }}</li>
+            <li>GCRS Dec: {{ body2.gcrs.dec }}</li>
+            <li>GCRS Distance: {{ body2.gcrs.distance }}</li>
+            <li>GCRS Obstime: {{ body2.gcrs.obstime }}</li>
+          </ul>
+        </ul>
+      </div>
+    </div>
+{% endblock %}
