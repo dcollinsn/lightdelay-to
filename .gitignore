@@ -87,5 +87,8 @@ pip-selfcheck.json
 ### Project template
 lightdelay/media/
 .pytest_cache/
+lightdelay/dev_settings.py
+lightdelay/staging_settings.py
 lightdelay/prod_settings.py
+lightdelay/aws_creds.py
 db.sqlite3

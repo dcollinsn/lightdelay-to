@@ -5,3 +5,5 @@ libsass
 django-compressor
 django-sass-processor
 --pre astroquery
+django-s3-storage==0.12.4
+python-dateutil>=2.8.0
