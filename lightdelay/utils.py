@@ -112,7 +112,7 @@ def get_location(query, time):
 #    except errors.UnknownSiteException:
 #        pass
 
-    raise LocationNotResolved(query)
+    raise LocationNotResolved(query, time)
 
 
 def calculate_distance(loc1, loc2):
